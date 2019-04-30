@@ -40,9 +40,18 @@ namespace WindowsFormsApp1
             item2.Click += russiaToolStripMenuItem_Click;
             item3.Click += englishToolStripMenuItem_Click;
 
+            defaultToolStripMenuItem_rus.Checked = true;
+            
+
+            blackToolStripMenuItem_rus.Click += blackToolStripMenuItem_Click;
+            redToolStripMenuItem_rus.Click += redToolStripMenuItem_Click;
+            defaultToolStripMenuItem_rus.Click += defaultToolStripMenuItem_Click;
+
+            blackToolStripMenuItem_rus.Click += AddFlagToItem_Black;
+            redToolStripMenuItem_rus.Click += AddFlagToItem_Red;
+            defaultToolStripMenuItem_rus.Click += AddFlagToItem_Default;
 
             toolStripComboBox_Fonts.SelectedIndexChanged += ChangeFont;
-
             toolStripComboBox_Size.SelectedIndexChanged += ChangeSize;
 
             foreach (FontFamily font in System.Drawing.FontFamily.Families)
@@ -51,6 +60,27 @@ namespace WindowsFormsApp1
 
             }
             toolStripComboBox_Fonts.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
+
+        private void AddFlagToItem_Default(object sender, EventArgs e)
+        {
+            blackToolStripMenuItem_rus.Checked = false;
+            redToolStripMenuItem_rus.Checked = false;
+            defaultToolStripMenuItem_rus.Checked = true;
+        }
+
+        private void AddFlagToItem_Red(object sender, EventArgs e)
+        {
+            blackToolStripMenuItem_rus.Checked = false;
+            redToolStripMenuItem_rus.Checked = true;
+            defaultToolStripMenuItem_rus.Checked = false;
+        }
+
+        private void AddFlagToItem_Black(object sender, EventArgs e)
+        {
+            blackToolStripMenuItem_rus.Checked = true;
+            redToolStripMenuItem_rus.Checked = false;
+            defaultToolStripMenuItem_rus.Checked = false;
         }
 
         private void ChangeSize(object sender, EventArgs e)
