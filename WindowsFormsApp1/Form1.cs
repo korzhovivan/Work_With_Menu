@@ -16,6 +16,11 @@ namespace WindowsFormsApp1
         Color defaultColor = new Color();
         Color defaultFontColor = new Color();
         ContextMenu cm = null;
+        string currentFile = null;
+        bool curFileWriting = false;
+
+        List<string> fonts = new List<string>();
+
         public Form1()
         {
             InitializeComponent();
@@ -36,21 +41,47 @@ namespace WindowsFormsApp1
             item3.Click += englishToolStripMenuItem_Click;
 
 
+            toolStripComboBox_Fonts.SelectedIndexChanged += ChangeFont;
 
+            toolStripComboBox_Size.SelectedIndexChanged += ChangeSize;
+
+            foreach (FontFamily font in System.Drawing.FontFamily.Families)
+            {
+                toolStripComboBox_Fonts.Items.Add(font.Name);
+
+            }
+            toolStripComboBox_Fonts.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
+
+        private void ChangeSize(object sender, EventArgs e)
+        {
+            textBox1.Font = new Font(textBox1.Font.FontFamily, float.Parse(toolStripComboBox_Size.SelectedItem.ToString()));
+        }
+
+        private void ChangeFont(object sender, EventArgs e)
+        {
+            textBox1.Font = new Font(toolStripComboBox_Fonts.Text, textBox1.Font.Size);
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
+           
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                textBox1.Text = File.ReadAllText(dialog.FileName);
+                textBox1.Text = File.ReadAllText(dialog.FileName, Encoding.Default);
+                currentFile = dialog.FileName;
+                
+                textBox1.Enabled = true;
+                curFileWriting = true;
             }
         }
 
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            textBox1.Enabled = true ;
+            textBox1.Text = "";
+            textBox1.Enabled = true;
+            curFileWriting = false;
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -58,8 +89,26 @@ namespace WindowsFormsApp1
             SaveFileDialog dialog = new SaveFileDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                File.WriteAllText(dialog.FileName, textBox1.Text);
+                File.WriteAllText(dialog.FileName, textBox1.Text,Encoding.Default);
             }
+            curFileWriting = true;
+        }
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (curFileWriting)
+            {
+                File.WriteAllText(currentFile, textBox1.Text, Encoding.Default);
+            }
+            else
+            {
+                SaveFileDialog dialog = new SaveFileDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllText(dialog.FileName, textBox1.Text, Encoding.Default);
+                }
+                curFileWriting = true;
+            }
+            
         }
 
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -81,18 +130,30 @@ namespace WindowsFormsApp1
         {
             textBox1.BackColor = Color.Black;
             textBox1.ForeColor = Color.White;
+
+
+            blackToolStripMenuItem.Checked = true;
+            redToolStripMenuItem.Checked = false;
+            defaultToolStripMenuItem.Checked = false;
         }
 
         private void redToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textBox1.BackColor = Color.Red;
-            textBox1.ForeColor = Color.White;
+
+            blackToolStripMenuItem.Checked = false;
+            redToolStripMenuItem.Checked = true;
+            defaultToolStripMenuItem.Checked = false;
         }
 
         private void defaultToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textBox1.BackColor = defaultColor;
             textBox1.ForeColor = defaultFontColor;
+
+            blackToolStripMenuItem.Checked = false;
+            redToolStripMenuItem.Checked = false;
+            defaultToolStripMenuItem.Checked = true;
         }
 
         private void russiaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -107,5 +168,7 @@ namespace WindowsFormsApp1
             menuStrip2.Visible = false;
             menuStrip1.Visible = true;
         }
+
+        
     }
 }
