@@ -40,8 +40,6 @@ namespace WindowsFormsApp1
             item2.Click += russiaToolStripMenuItem_Click;
             item3.Click += englishToolStripMenuItem_Click;
 
-            defaultToolStripMenuItem_rus.Checked = true;
-            
 
             blackToolStripMenuItem_rus.Click += blackToolStripMenuItem_Click;
             redToolStripMenuItem_rus.Click += redToolStripMenuItem_Click;
@@ -54,12 +52,15 @@ namespace WindowsFormsApp1
             toolStripComboBox_Fonts.SelectedIndexChanged += ChangeFont;
             toolStripComboBox_Size.SelectedIndexChanged += ChangeSize;
 
+            toolStripComboBox_Font_rus.SelectedIndexChanged += ChangeFont;
+            toolStripComboBox_Size_rus.SelectedIndexChanged += ChangeSize;
+
             foreach (FontFamily font in System.Drawing.FontFamily.Families)
             {
                 toolStripComboBox_Fonts.Items.Add(font.Name);
-
+                toolStripComboBox_Font_rus.Items.Add(font.Name);
             }
-            toolStripComboBox_Fonts.DropDownStyle = ComboBoxStyle.DropDownList;
+            
         }
 
         private void AddFlagToItem_Default(object sender, EventArgs e)
